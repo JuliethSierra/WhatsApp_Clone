@@ -225,6 +225,7 @@
             android:background="@drawable/background_button_meta"/>
 
         <ImageButton
+            android:id="@+id/add_chats"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/add"

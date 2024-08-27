@@ -1,31 +1,35 @@
-package com.example.whatsappclone
+package com.example.whatsappclone.rvActivity
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.activity.ComponentActivity
-import com.example.instagramclone.showToast
-import com.example.whatsappclone.rvActivity.RvMainActivity
-import de.hdodenhof.circleimageview.CircleImageView
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.whatsappclone.Chat
+import com.example.whatsappclone.R
+import com.example.whatsappclone.rvActivity.adapters.RVAdapterChats
 
-class MainActivity : ComponentActivity() {
+class RvMainActivity : AppCompatActivity() {
 
-    private lateinit var llChats: LinearLayout
+    private lateinit var rvChats: RecyclerView
     private val chatList = arrayListOf<Chat>()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.Theme_WhatsAppClone)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_chat_screen)
-        initViews()
+        setContentView(R.layout.activity_rv_main)
         fillPostList()
-        addPostsToLL()
-    }
+        initViews()
+        }
 
+    private fun initViews() {
+        rvChats = findViewById(R.id.RvChats)
+        rvChats.apply {
+            layoutManager = LinearLayoutManager(this@RvMainActivity, LinearLayoutManager.VERTICAL, false)
+            adapter = RVAdapterChats(chatList)
+        }
+    }
 
     private fun fillPostList() {
         chatList.add(
@@ -101,46 +105,5 @@ class MainActivity : ComponentActivity() {
         chatList.add(Chat(R.drawable.media_photo, "Chat 15", "Estoy en camino", "5/9/24", "2"))
     }
 
-    private fun addPostsToLL() {
-        chatList.forEach { chat ->
 
-            val postView = layoutInflater.inflate(R.layout.chats_screen, null)
-
-            val profilePhoto: CircleImageView = postView.findViewById(R.id.imageProfilePicture)
-            profilePhoto.setImageResource(chat.profilePhoto)
-
-            val chatName: TextView = postView.findViewById(R.id.chatName)
-            chatName.text = chat.chatName
-            chatName.setOnClickListener {
-                showToast("${chat.chatName}")
-            }
-
-            val message: TextView = postView.findViewById(R.id.message)
-            message.text = chat.message
-            message.setOnClickListener {
-                showToast("${chat.message}")
-            }
-
-            val messageDate: TextView = postView.findViewById(R.id.date)
-            messageDate.text = chat.messageDate
-            messageDate.setOnClickListener {
-                showToast("${chat.messageDate}")
-            }
-
-            val messageCount: TextView = postView.findViewById(R.id.numberChats)
-            messageCount.text = chat.messageCount
-            messageCount.setOnClickListener {
-                showToast("${chat.messageCount}")
-            }
-
-            llChats.addView(postView)
-        }
     }
-
-    private fun initViews() {
-        llChats = findViewById(R.id.ll_chats)
-        findViewById<ImageButton>(R.id.add_chats).setOnClickListener{
-            startActivity(Intent(this, RvMainActivity::class.java))
-        }
-    }
-}
