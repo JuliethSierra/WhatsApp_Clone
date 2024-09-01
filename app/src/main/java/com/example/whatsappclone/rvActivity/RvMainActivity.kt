@@ -2,111 +2,95 @@ package com.example.whatsappclone.rvActivity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.whatsappclone.data.Chat
 import com.example.whatsappclone.llActivity.MainActivity
-import com.example.whatsappclone.R
 import com.example.whatsappclone.databinding.ActivityRvMainBinding
 import com.example.whatsappclone.rvActivity.adapters.RVAdapterChats
+import com.example.whatsappclone.utils.showToast
+import com.example.whatsappclone.viewModelChat.ChatViewModel
+import kotlinx.coroutines.launch
 
 class RvMainActivity : ComponentActivity() {
 
     private lateinit var binding: ActivityRvMainBinding
-    private val chatList = arrayListOf<Chat>()
+    private val chatViewModel: ChatViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityRvMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        fillPostList()
+
         initViews()
+        getData()
+        listenData()
     }
 
     private fun initViews() {
-        binding.RvChats.apply {
-            layoutManager = LinearLayoutManager(this@RvMainActivity, LinearLayoutManager.VERTICAL, false)
-            adapter = RVAdapterChats(chatList)
-        }
+        binding.RvChats.layoutManager =
+            LinearLayoutManager(this@RvMainActivity, LinearLayoutManager.VERTICAL, false)
+
         binding.filterAllChats.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
+
+        binding.addChats.setOnClickListener{
+            addChat()
+            listenData()
+            //getListSize()
+            showToast("Se ha agregado un nuevo chat", Toast.LENGTH_SHORT)
+            Log.d("chatadd", "añadido")
+            Log.d("chatSze", "añadido ${getListSize()}")
+
+        }
+
+        binding.filterFavoritesChats.setOnClickListener{
+            deleteChat()
+            listenData()
+            showToast("Se ha Eliminado un chat", Toast.LENGTH_SHORT)
+            Log.d("chatDelete", "Eliminado")
+            Log.d("chatSze", "Eliminado ${getListSize()}")
+        }
+
+        binding.filterGroups.setOnClickListener{
+            updateChat()
+            listenData()
+            showToast("Se ha Modificado un chat", Toast.LENGTH_SHORT)
+            Log.d("chatUpdate", "Modificado")
+            Log.d("chatSze", "Modificado ${getListSize()}")
+        }
     }
 
-    private fun fillPostList() {
-        chatList.add(
-            Chat(
-                R.drawable.media_photo,
-                "Chat 1",
-                "Hola, ¿cómo estás?",
-                "7/24/24",
-                "1"
-            )
-        )
-        chatList.add(Chat(R.drawable.media_photo, "Chat 2", "Nos vemos mañana", "8/22/24", "1"))
-        chatList.add(
-            Chat(
-                R.drawable.media_photo,
-                "Chat 3",
-                "¡Feliz cumpleaños!",
-                "8/22/24",
-                "10"
-            )
-        )
-        chatList.add(
-            Chat(
-                R.drawable.media_photo,
-                "Chat 4",
-                "¿Qué tal el proyecto?",
-                "5/24/24",
-                "5"
-            )
-        )
-        chatList.add(
-            Chat(
-                R.drawable.media_photo,
-                "Chat 5",
-                "¿Vas a la reunión?",
-                "5/12/24",
-                "2"
-            )
-        )
-        chatList.add(
-            Chat(
-                R.drawable.media_photo,
-                "Chat 6",
-                "Te envío los documentos",
-                "5/11/24",
-                "7"
-            )
-        )
-        chatList.add(
-            Chat(
-                R.drawable.media_photo,
-                "Chat 7",
-                "Nos hablamos luego",
-                "5/11/24",
-                "5"
-            )
-        )
-        chatList.add(Chat(R.drawable.media_photo, "Chat 8", "Necesito tu ayuda", "5/11/24", "6"))
-        chatList.add(
-            Chat(
-                R.drawable.media_photo,
-                "Chat 9",
-                "¡Gracias por todo!",
-                "5/11/24",
-                "9"
-            )
-        )
-        chatList.add(Chat(R.drawable.media_photo, "Chat 10", "Hola!", "5/10/24", "1"))
-        chatList.add(Chat(R.drawable.media_photo, "Chat 11", "Estás ocupada", "5/10/24", "1"))
-        chatList.add(Chat(R.drawable.media_photo, "Chat 12", "Estoy en camino", "5/10/24", "2"))
-        chatList.add(Chat(R.drawable.media_photo, "Chat 13", "¿Como estás?", "5/10/24", "1"))
-        chatList.add(Chat(R.drawable.media_photo, "Chat 14", "Hola", "5/9/24", "1"))
-        chatList.add(Chat(R.drawable.media_photo, "Chat 15", "Estoy en camino", "5/9/24", "2"))
+    private fun getListSize(): Int{
+        return chatViewModel.getListSize()
     }
 
-
+    private fun getData() {
+        chatViewModel.getData()
     }
+
+    private fun addChat(){
+        chatViewModel.addChat()
+    }
+
+    private fun deleteChat(){
+        chatViewModel.deleteChat()
+    }
+
+    private fun updateChat(){
+        chatViewModel.updateChat()
+    }
+
+    private fun listenData() {
+        lifecycleScope.launch {
+            chatViewModel.uiState.collect { data ->
+                binding.RvChats.adapter = RVAdapterChats(data.chats)
+            }
+        }
+    }
+}

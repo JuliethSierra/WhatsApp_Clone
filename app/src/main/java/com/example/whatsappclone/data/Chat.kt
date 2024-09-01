@@ -6,7 +6,6 @@ data class Chat(
     val message: String,
     val messageDate: String,
     val messageCount: String
-
 )
 
 
