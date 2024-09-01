@@ -2,34 +2,34 @@ package com.example.whatsappclone.rvActivity
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.whatsappclone.data.Chat
 import com.example.whatsappclone.llActivity.MainActivity
 import com.example.whatsappclone.R
+import com.example.whatsappclone.databinding.ActivityRvMainBinding
 import com.example.whatsappclone.rvActivity.adapters.RVAdapterChats
 
 class RvMainActivity : ComponentActivity() {
 
-    private lateinit var rvChats: RecyclerView
+    private lateinit var binding: ActivityRvMainBinding
     private val chatList = arrayListOf<Chat>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_rv_main)
+
+        binding = ActivityRvMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         fillPostList()
         initViews()
     }
 
     private fun initViews() {
-        rvChats = findViewById(R.id.RvChats)
-        rvChats.apply {
+        binding.RvChats.apply {
             layoutManager = LinearLayoutManager(this@RvMainActivity, LinearLayoutManager.VERTICAL, false)
             adapter = RVAdapterChats(chatList)
         }
-        findViewById<TextView>(R.id.filterAllChats).setOnClickListener{
+        binding.filterAllChats.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
     }
