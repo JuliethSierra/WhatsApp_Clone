@@ -1,17 +1,17 @@
 package com.example.whatsappclone.rvActivity
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import android.widget.TextView
+import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.whatsappclone.Chat
+import com.example.whatsappclone.data.Chat
+import com.example.whatsappclone.llActivity.MainActivity
 import com.example.whatsappclone.R
 import com.example.whatsappclone.rvActivity.adapters.RVAdapterChats
 
-class RvMainActivity : AppCompatActivity() {
+class RvMainActivity : ComponentActivity() {
 
     private lateinit var rvChats: RecyclerView
     private val chatList = arrayListOf<Chat>()
@@ -21,13 +21,16 @@ class RvMainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_rv_main)
         fillPostList()
         initViews()
-        }
+    }
 
     private fun initViews() {
         rvChats = findViewById(R.id.RvChats)
         rvChats.apply {
             layoutManager = LinearLayoutManager(this@RvMainActivity, LinearLayoutManager.VERTICAL, false)
             adapter = RVAdapterChats(chatList)
+        }
+        findViewById<TextView>(R.id.filterAllChats).setOnClickListener{
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 

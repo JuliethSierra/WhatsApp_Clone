@@ -1,15 +1,17 @@
-package com.example.whatsappclone
+package com.example.whatsappclone.llActivity
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.ComponentActivity
-import com.example.instagramclone.showToast
-import com.example.whatsappclone.rvActivity.RvMainActivity
+import com.example.whatsappclone.utils.showToast
 import de.hdodenhof.circleimageview.CircleImageView
+import com.example.whatsappclone.data.Chat
+import com.example.whatsappclone.R
+import com.example.whatsappclone.rvActivity.RvMainActivity
+
+
 
 class MainActivity : ComponentActivity() {
 
@@ -139,7 +141,7 @@ class MainActivity : ComponentActivity() {
 
     private fun initViews() {
         llChats = findViewById(R.id.ll_chats)
-        findViewById<ImageButton>(R.id.add_chats).setOnClickListener{
+        findViewById<TextView>(R.id.filterUnreadChats).setOnClickListener {
             startActivity(Intent(this, RvMainActivity::class.java))
         }
     }
