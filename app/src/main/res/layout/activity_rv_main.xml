@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/home_chat"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".rvActivity.RvMainActivity">
 
     <TextView
         android:id="@+id/WhatsAppTitle"
@@ -12,7 +14,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif-medium"
-        android:text="WhatsApp"
+        android:text="@string/WhatsAppTitle"
         android:textSize="28sp"
         android:textColor="@color/GreenWhatsApp"
         android:textStyle="bold"
@@ -49,7 +51,7 @@
         android:src="@drawable/ic_dots_menu" />
 
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="5dp"
@@ -60,151 +62,120 @@
         app:layout_constraintTop_toBottomOf="@id/WhatsAppTitle"
         app:layout_constraintVertical_bias="0.0">
 
-
         <LinearLayout
-            android:id="@+id/ll_chats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/llSearch"
+                android:id="@+id/llSearchFiltersContainer"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/layout_search_chats"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/WhatsAppTitle">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <ImageButton
-                    android:id="@+id/ibSearchIcon"
-                    android:layout_width="5dp"
-                    android:layout_height="32dp"
+                <LinearLayout
+                    android:id="@+id/llSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/layout_search_chats"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/WhatsAppTitle">
+
+                    <ImageButton
+                        android:id="@+id/ibSearchIcon"
+                        android:layout_width="5dp"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="0.1"
+                        android:background="#00000000"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/meta_ai" />
+
+                    <EditText
+                        android:id="@+id/etSearch"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:fontFamily="sans-serif"
+                        android:hint="@string/SearchText"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:padding="0dp"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llFilters"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="5dp"
-                    android:layout_weight="0.1"
-                    android:background="#00000000"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/meta_ai" />
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llSearch">
 
-                <EditText
-                    android:id="@+id/etSearch"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:fontFamily="sans-serif"
-                    android:hint="Ask Meta AI or search"
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"
-                    android:padding="0dp"
-                    android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/filterAllChats"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:layout_margin="5dp"
+                        android:text="@string/filterAll"
+                        android:textAlignment="center"
+                        android:textColor="@color/GreenWhatsApp"
+                        android:background="@drawable/layout_search_chats"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/filterUnreadChats"
+                        android:layout_width="65dp"
+                        android:layout_height="25dp"
+                        android:layout_margin="5dp"
+                        android:textAlignment="center"
+                        android:background="@drawable/layout_search_chats_select"
+                        android:text="@string/filterUnread"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/filterFavoritesChats"
+                        android:layout_width="100dp"
+                        android:layout_height="25dp"
+                        android:layout_margin="5dp"
+                        android:textAlignment="center"
+                        android:background="@drawable/layout_search_chats"
+                        android:text="@string/filterDeleteChat"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/filterGroups"
+                        android:layout_width="100dp"
+                        android:layout_height="25dp"
+                        android:layout_margin="5dp"
+                        android:textAlignment="center"
+                        android:background="@drawable/layout_search_chats"
+                        android:text="@string/filterUpdateChat"
+                        android:textSize="15sp" />
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/llFilters"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RvChats"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llSearch">
-
-
-                <TextView
-                    android:id="@+id/filterAllChats"
-                    android:layout_width="50dp"
-                    android:layout_height="25dp"
-                    android:layout_margin="5dp"
-                    android:text="All"
-                    android:textAlignment="center"
-                    android:textColor="@color/GreenWhatsApp"
-                    android:background="@drawable/layout_search_chats_select"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/filterUnreadChats"
-                    android:layout_width="75dp"
-                    android:layout_height="25dp"
-                    android:layout_margin="5dp"
-                    android:textAlignment="center"
-                    android:background="@drawable/layout_search_chats"
-                    android:text="Change RV"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/filterFavoritesChats"
-                    android:layout_width="70dp"
-                    android:layout_height="25dp"
-                    android:layout_margin="5dp"
-                    android:textAlignment="center"
-                    android:background="@drawable/layout_search_chats"
-                    android:text="Favorites"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/filterGroups"
-                    android:layout_width="65dp"
-                    android:layout_height="25dp"
-                    android:layout_margin="5dp"
-                    android:textAlignment="center"
-                    android:background="@drawable/layout_search_chats"
-                    android:text="Groups"
-                    android:textSize="15sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llArchiveChat1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llSearch">
-
-                <ImageButton
-                    android:id="@+id/ibArchiveChatIcon"
-                    android:layout_width="5dp"
-                    android:layout_height="22dp"
-                    android:layout_weight="0.1"
-                    android:background="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/archive_chat_icon" />
-
-                <TextView
-                    android:id="@+id/ArchiveChatText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:fontFamily="sans-serif"
-                    android:hint="Archived"
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"
-                    android:padding="0dp"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-
-
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:clipToPadding="false"/>
         </LinearLayout>
-
-    </ScrollView>
-
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/ChatIAOptions"
@@ -361,6 +332,5 @@
                 android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

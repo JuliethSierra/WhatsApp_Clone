@@ -1,6 +1,4 @@
-package com.example.whatsappclone
-
-import java.util.Date
+package com.example.whatsappclone.data
 
 data class Chat(
     val profilePhoto: Int,
@@ -8,7 +6,6 @@ data class Chat(
     val message: String,
     val messageDate: String,
     val messageCount: String
-
 )
 
 

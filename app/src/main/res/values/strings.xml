@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">WhatsAppClone</string>
+    <string name="chat_name">Me</string>
+    <string name="message">Hey</string>
+    <string name="date">8/6/2024</string>
+    <string name="numberChats">1</string>
+    <string name="WhatsAppTitle">WhatsApp</string>
+    <string name="SearchText">Ask Meta AI or search</string>
+    <string name="filterAll">All</string>
+    <string name="filterUnread">Unread</string>
+    <string name="filterFavorites">Favorites</string>
+    <string name="filterGroups">Groups</string>
+    <string name="filterDeleteChat">Delete Chat</string>
+    <string name="filterUpdateChat">Update Chat</string>
+    <string name="optionChat">Chats</string>
+    <string name="optionUpdates">Updates</string>
+    <string name="optionCommunities">Communities</string>
+    <string name="optionCalls">Calls</string>
 </resources>
