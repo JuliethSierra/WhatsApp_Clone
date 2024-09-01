@@ -1,24 +1,34 @@
-package com.example.whatsappclone.viewModelChat
+package com.example.whatsappclone
 
-import androidx.lifecycle.ViewModel
-import com.example.whatsappclone.R
-import com.example.whatsappclone.data.Chat
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlin.random.Random
+import android.os.Bundle
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.activity.ComponentActivity
+import com.example.instagramclone.showToast
+import de.hdodenhof.circleimageview.CircleImageView
 
-class ChatViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(ChatIUState())
-    val uiState: StateFlow<ChatIUState> = _uiState.asStateFlow()
+class MainActivity : ComponentActivity() {
 
+    private lateinit var llChats: LinearLayout
     private val chatList = arrayListOf<Chat>()
 
-    private var chatCount = 0
 
-    init {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_WhatsAppClone)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.main_chat_screen)
+        initViews()
         fillPostList()
+        addPostsToLL()
     }
+
+    /*  private fun fillPostList() {
+          for (i in 0 until 10) {
+              chatList.add(Chat("photo1.jpg", "Chat 1", "Hola, ¿cómo estás?", "2024-08-25", "3"))
+          }
+      }*/
 
     private fun fillPostList() {
         chatList.add(
@@ -94,55 +104,43 @@ class ChatViewModel : ViewModel() {
         chatList.add(Chat(R.drawable.media_photo, "Chat 15", "Estoy en camino", "5/9/24", "2"))
     }
 
-    fun getData() {
-        _uiState.value = _uiState.value.copy(
-            chats = chatList
-        )
+    private fun addPostsToLL() {
+        chatList.forEach { chat ->
+
+            val postView = layoutInflater.inflate(R.layout.chats_screen, null)
+
+            val profilePhoto: CircleImageView = postView.findViewById(R.id.imageProfilePicture)
+            profilePhoto.setImageResource(chat.profilePhoto)
+
+            val chatName: TextView = postView.findViewById(R.id.chatName)
+            chatName.text = chat.chatName
+            chatName.setOnClickListener {
+                showToast("${chat.chatName}")
+            }
+
+            val message: TextView = postView.findViewById(R.id.message)
+            message.text = chat.message
+            message.setOnClickListener {
+                showToast("${chat.message}")
+            }
+
+            val messageDate: TextView = postView.findViewById(R.id.date)
+            messageDate.text = chat.messageDate
+            messageDate.setOnClickListener {
+                showToast("${chat.messageDate}")
+            }
+
+            val messageCount: TextView = postView.findViewById(R.id.numberChats)
+            messageCount.text = chat.messageCount
+            messageCount.setOnClickListener {
+                showToast("${chat.messageCount}")
+            }
+
+            llChats.addView(postView)
+        }
     }
 
-    fun addChat() {
-        chatCount++
-        chatList.add(
-            Chat(
-                R.drawable.media_photo,
-                "Chat $chatCount",
-                "Nuevo Mensaje $chatCount",
-                "5/9/24",
-                "2"
-            )
-        )
-        _uiState.value = _uiState.value.copy(
-            chats = chatList
-        )
+    private fun initViews() {
+        llChats = findViewById(R.id.ll_chats)
     }
-
-    fun getListSize(): Int {
-        return chatList.size
-    }
-
-    fun deleteChat() {
-        val chatToRemoveIndex = Random.nextInt(from = 0, until = getListSize())
-        chatList.removeAt(chatToRemoveIndex)
-        _uiState.value = _uiState.value.copy(
-            chats = chatList
-        )
-    }
-
-    fun updateChat() {
-        val chatToUpdateIndex = Random.nextInt(from = 0, until = getListSize())
-        val chat =
-            // Access post using index
-            chatList[chatToUpdateIndex]
-                // Using copy, we access and modify the existing post (accessed by index)
-                .copy(
-                    chatName = "ChatName #$chatToUpdateIndex modificado"
-                )
-        // Replace the old post with the new one using index
-        chatList[chatToUpdateIndex] = chat
-
-        _uiState.value = _uiState.value.copy(
-            chats = chatList
-        )
-    }
-
 }
